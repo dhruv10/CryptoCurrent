@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
     this.registerInterval();    
   }
 
-  private initData() {
+  initData() {
     this.dataService.fetchData()
       .then((currencies: Currency[]) => {
         this.currenciesData = currencies;
@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
       });
   }
 
-  private registerInterval() {
+  registerInterval() {
     if (this.updateIntervalTime < 0.05) return alert('Sorry, too low values of Update Interval might lead to problems!');
     if (this.registeredInterval) clearInterval(this.registeredInterval);
     this.registeredInterval = setInterval(() => {
@@ -94,7 +94,7 @@ export class AppComponent implements OnInit {
     }, this.updateIntervalTime * 10000); // convert to min from ms
   }
 
-  private sortData(property: string) {
+  sortData(property: string) {
     if (this.sortsApplied[property] == null) return;
     this.currenciesData.sort((c1: Currency, c2: Currency): number => {
       return this.sortsApplied[property] * (c2[property] - c1[property]);
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
     this.sortsApplied[property] = -this.sortsApplied[property]; // lets take advantage of JS mutability!
   }
 
-  private getIconClass(property: string) {
+  getIconClass(property: string) {
     if (this.sortsApplied[property] == undefined) return {};
     const conditionalClasses = {
       'fa-sort-asc': this.sortsApplied[property] > 0,
@@ -111,11 +111,11 @@ export class AppComponent implements OnInit {
     return conditionalClasses;
   }
 
-  private switchModalState() {
+  switchModalState() {
     this.modalOpen = !this.modalOpen;
   }
 
-  private updateFocusedCurrencyAndSwitchModal(currency: Currency) {
+  updateFocusedCurrencyAndSwitchModal(currency: Currency) {
 
     this.focusedCurrency = {} as Currency; // first init with empty to not show wrong data in modal
 
