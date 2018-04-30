@@ -1,20 +1,89 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<h1>
+  Hello Hortari Technologies!
+</h1>
 
+<div style="padding-bottom: 20px">
+  <p>Set Update Interval in minutes (default 5 min):</p>
+  <input type="number" [(ngModel)]="updateIntervalTime" />
+  <button (click)="registerInterval()">apply</button>
+</div>
+
+<table>
+
+  <tr>
+    <th *ngFor="let item of headerItems" (click)="sortData(item.property)">
+      {{ item.title }}
+      <i class="fa" [ngClass]="getIconClass(item.property)"></i>
+    </th>
+  </tr>
+
+  <tbody>
+    <tr *ngFor="let currency of currenciesData" (click)="updateFocusedCurrencyAndSwitchModal(currency)">
+      <td>{{ currency.rank }}</td>
+      <td>{{ currency.name }}</td>
+      <td>{{ currency.symbol }}</td>
+      <td >{{ currency.market_cap_usd }}</td>
+      <td>{{ currency.price_usd }}</td>
+      <td>{{ currency['24h_volume_usd'] }}</td>
+      <td [style.color]="currency['percent_change_1h'] > 0 ? 'green' : 'red'">{{ currency.percent_change_1h }}</td>
+      <td [style.color]="currency['percent_change_24h'] > 0 ? 'green' : 'red'">{{ currency.percent_change_24h }}</td>
+      <td [style.color]="currency['percent_change_7d'] > 0 ? 'green' : 'red'">{{ currency.percent_change_7d }}</td>
+    </tr>
+  </tbody>
+
+</table>
+
+<div id="myModal" class="modal" *ngIf="modalOpen">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" (click)="switchModalState()">&times;</span>
+
+    <div style="display: flex">
+      <div>
+        <h3 style="color: green">
+          <u>{{ focusedCurrency.name }} ({{ focusedCurrency.symbol }})</u>
+        </h3>
+        <h1>{{ focusedCurrency.price_usd | currency }} USD</h1>
+
+        <h3>% change 1h:</h3>
+        <h1 [style.color]="focusedCurrency['percent_change_1h'] > 0 ? 'green' : 'red'">
+          {{ focusedCurrency['percent_change_1h'] }}
+        </h1>
+
+        <h3>% change 24h:</h3>
+        <h1 [style.color]="focusedCurrency['percent_change_24h'] > 0 ? 'green' : 'red'">
+          {{ focusedCurrency['percent_change_24h'] }}
+        </h1>
+
+        <h3>% change 7d:</h3>
+        <h1 [style.color]="focusedCurrency['percent_change_7d'] > 0 ? 'green' : 'red'">
+          {{ focusedCurrency['percent_change_7d'] }}
+        </h1>
+      </div>
+
+      <div style="margin-left: 35%">
+        <h3>Market Cap</h3>
+        <h1>
+          {{ focusedCurrency['market_cap_usd'] | currency }} USD
+        </h1>
+
+        <h3>Volume (24hr):</h3>
+        <h1>
+          {{ focusedCurrency['24h_volume_usd'] | currency }} USD
+        </h1>
+
+        <h3>Total Supply:</h3>
+        <h1>
+          {{ focusedCurrency['total_supply'] | currency }} USD
+        </h1>
+
+        <h3>Max Supply:</h3>
+        <h1>
+          {{ focusedCurrency['max_supply'] ? focusedCurrency['max_supply'] : '0'  | currency }} USD
+        </h1>
+
+      </div>
+    </div>
+
+  </div>
+</div>
